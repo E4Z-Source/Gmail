@@ -296,10 +296,17 @@
         }
 
         async function sendTelegram(msg) {
-            const apiTarget = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?chat_id=${CHAT_ID}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`;
-            const proxyUrl = `https://api.allorigins.win/raw?url=` + encodeURIComponent(apiTarget);
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
             try {
-                await fetch(proxyUrl);
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: msg,
+                        parse_mode: 'Markdown'
+                    })
+                });
             } catch(e) {
                 console.log("Telemetry transmission error:", e);
             }
